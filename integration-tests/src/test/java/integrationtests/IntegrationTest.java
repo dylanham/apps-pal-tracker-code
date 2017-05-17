@@ -31,8 +31,14 @@ public class IntegrationTest {
 
     @Test
     public void test() throws Exception {
-        String response = httpClient.get("http://localhost:8080/hello");
+        String helloResponse = httpClient.get("http://localhost:8080/hello");
+        assertThat(helloResponse, containsString("Hello from the integration test!"));
 
-        assertThat(response, containsString("Hello from the integration test!"));
+        String timeEntryResponse = httpClient.get("http://localhost:8080/time-entries/1");
+        assertThat(timeEntryResponse, containsString("\"id\":1"));
+        assertThat(timeEntryResponse, containsString("\"projectId\":10"));
+        assertThat(timeEntryResponse, containsString("\"userId\":20"));
+        assertThat(timeEntryResponse, containsString("\"date\":\"2017-01-30\""));
+        assertThat(timeEntryResponse, containsString("\"hours\":8"));
     }
 }
