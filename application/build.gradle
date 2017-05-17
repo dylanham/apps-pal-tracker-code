@@ -8,3 +8,9 @@ repositories {
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
 }
+
+bootRun {
+    environment([
+        "APPLICATION_MESSAGE" : "Hello from bootRun"
+    ])
+}

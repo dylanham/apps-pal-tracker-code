@@ -3,6 +3,7 @@ package integrationtests;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 import static org.junit.Assert.fail;
 
@@ -14,11 +15,14 @@ class ApplicationServer {
     private Process serverProcess;
 
 
-    void start() throws IOException, InterruptedException {
-        serverProcess = new ProcessBuilder()
+    void start(Map<String, String> env) throws IOException, InterruptedException {
+        ProcessBuilder processBuilder = new ProcessBuilder()
             .command("java", "-jar", workingDir + "/../application/build/libs/application.jar")
-            .inheritIO()
-            .start();
+            .inheritIO();
+
+        env.forEach((key, value) -> processBuilder.environment().put(key, value));
+
+        serverProcess = processBuilder.start();
 
         waitUntilServerIsUp();
     }
