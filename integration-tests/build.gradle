@@ -7,6 +7,7 @@ repositories {
 dependencies {
     testCompile "junit:junit:4.12"
     testCompile "com.squareup.okhttp3:okhttp:3.8.0"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:2.8.8.1"
 }
 
 test {

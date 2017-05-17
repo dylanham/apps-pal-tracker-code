@@ -1,15 +1,16 @@
 package io.pivotal.pal.continuum.timesheets;
 
+import io.pivotal.pal.continuum.timesheets.data.TimeEntryFields;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 import static io.pivotal.pal.continuum.timesheets.TimeEntryInfo.timeEntryInfoBuilder;
+import static io.pivotal.pal.continuum.timesheets.data.TimeEntryFields.timeEntryFieldsBuilder;
 
 
 @RestController
@@ -30,6 +31,23 @@ public class TimeEntriesController {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @PostMapping
+    public ResponseEntity<TimeEntryInfo> create(@RequestBody TimeEntryForm form) {
+        TimeEntryFields fields = formToFields(form);
+        TimeEntryRecord record = repository.create(fields);
+
+        return new ResponseEntity<>(present(record), HttpStatus.CREATED);
+    }
+
+
+    private TimeEntryFields formToFields(TimeEntryForm form) {
+        return timeEntryFieldsBuilder()
+            .projectId(form.projectId)
+            .userId(form.userId)
+            .date(LocalDate.parse(form.date))
+            .hours(form.hours)
+            .build();
+    }
 
     private TimeEntryInfo present(TimeEntryRecord record) {
         return timeEntryInfoBuilder()
