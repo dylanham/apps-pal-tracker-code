@@ -1,0 +1,16 @@
+---
+resources:
+- name: app-continuum
+  type: git
+  source:
+    uri: git@github.com:platform-acceleration-lab/apps-continuum-code.git
+    branch: master
+    private_key: {{github-private-key}}
+
+jobs:
+- name: build
+  plan:
+  - get: app-continuum
+    trigger: true
+  - task: build and test
+    file: app-continuum/ci/tasks/build.yml
