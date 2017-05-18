@@ -39,6 +39,7 @@ public class IntegrationTest {
         int createdId = testCreateTimeEntry();
         testListTimeEntries();
         testUpdateTimeEntry(createdId);
+        testDeleteTimeEntry(createdId);
     }
 
     private void testHello() {
@@ -105,5 +106,13 @@ public class IntegrationTest {
             .hasInt("$.userId", 211)
             .hasString("$.date", "2017-05-21")
             .hasInt("$.hours", 8);
+    }
+
+    private void testDeleteTimeEntry(int entryId) {
+        Response deleteResponse = httpClient.delete("http://localhost:8080/time-entries/" + entryId);
+        assertThat(deleteResponse.status).isEqualTo(200);
+
+        Response findResponse = httpClient.get("http://localhost:8080/time-entries/" + entryId);
+        assertThat(findResponse.status).isEqualTo(404);
     }
 }

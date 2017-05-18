@@ -49,6 +49,10 @@ public class TimeEntryRepository {
         return find(id).orElse(null);
     }
 
+    public void delete(long id) {
+        find(id).ifPresent(records::remove);
+    }
+
 
     private TimeEntryRecord buildRecord(long id, TimeEntryFields fields) {
         return timeEntryRecordBuilder()

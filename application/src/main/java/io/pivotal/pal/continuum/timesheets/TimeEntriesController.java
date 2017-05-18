@@ -58,6 +58,12 @@ public class TimeEntriesController {
         return new ResponseEntity<>(present(record), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable long id) {
+        repository.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 
     private TimeEntryFields formToFields(TimeEntryForm form) {
         return timeEntryFieldsBuilder()

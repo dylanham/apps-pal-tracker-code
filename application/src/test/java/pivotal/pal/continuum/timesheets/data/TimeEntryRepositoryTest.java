@@ -124,4 +124,13 @@ public class TimeEntryRepositoryTest {
         Optional<TimeEntryRecord> maybePersistedRecord = repo.find(1);
         assertThat(maybePersistedRecord).isEqualTo(Optional.of(expectedRecord));
     }
+
+    @Test
+    public void testDelete() {
+        assertThat(repo.find(1)).isPresent();
+
+        repo.delete(1);
+
+        assertThat(repo.find(1)).isNotPresent();
+    }
 }

@@ -14,7 +14,7 @@ class HttpClient {
 
     Response get(String url) {
         Request request = new Request.Builder().url(url).build();
-        return fetchBodyString(request);
+        return fetch(request);
     }
 
     Response post(String url, Map<String, Object> jsonBody) {
@@ -24,7 +24,7 @@ class HttpClient {
                 .post(RequestBody.create(JSON, objectMapper.writeValueAsString(jsonBody)))
                 .build();
 
-            return fetchBodyString(request);
+            return fetch(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -37,14 +37,19 @@ class HttpClient {
                 .put(RequestBody.create(JSON, objectMapper.writeValueAsString(jsonBody)))
                 .build();
 
-            return fetchBodyString(request);
+            return fetch(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    public Response delete(String url) {
+        Request request = new Request.Builder().delete().url(url).build();
+        return fetch(request);
+    }
 
-    private Response fetchBodyString(Request request) {
+
+    private Response fetch(Request request) {
         try {
             okhttp3.Response response = okHttp.newCall(request).execute();
             ResponseBody body = response.body();

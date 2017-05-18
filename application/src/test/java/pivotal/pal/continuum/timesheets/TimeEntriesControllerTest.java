@@ -17,8 +17,7 @@ import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static pivotal.pal.continuum.TestBuilders.*;
 
 public class TimeEntriesControllerTest {
@@ -142,5 +141,14 @@ public class TimeEntriesControllerTest {
             .date("2017-12-31")
             .build()
         );
+    }
+
+    @Test
+    public void testDelete() {
+        ResponseEntity entity = controller.delete(121L);
+
+        verify(repository).delete(121L);
+
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 }
