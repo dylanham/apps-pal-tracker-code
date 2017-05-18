@@ -1,2 +1,3 @@
-include "application"
-include "integration-tests"
+include ":application"
+include ":integration-tests"
+include ":databases:continuum"

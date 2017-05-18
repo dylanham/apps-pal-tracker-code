@@ -1,6 +1,7 @@
 buildscript {
     ext {
         springBootVersion = "1.5.2.RELEASE"
+        mysqlVersion = "6.0.6"
     }
 
     repositories {
@@ -8,6 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
+        classpath "mysql:mysql-connector-java:$mysqlVersion"
     }
 }
