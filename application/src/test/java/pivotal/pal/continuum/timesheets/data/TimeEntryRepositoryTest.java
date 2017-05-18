@@ -6,17 +6,43 @@ import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryFields.timeEntryFieldsBuilder;
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord.timeEntryRecordBuilder;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimeEntryRepositoryTest {
 
     private TimeEntryRepository repo = new TimeEntryRepository();
+
+    @Test
+    public void testFindAll() {
+        TimeEntryRecord createdRecord = repo.create(
+            timeEntryFieldsBuilder()
+                .projectId(52L)
+                .userId(12L)
+                .date(LocalDate.parse("2016-02-22"))
+                .hours(4)
+                .build()
+        );
+
+
+        List<TimeEntryRecord> foundRecords = repo.findAll();
+
+
+        assertThat(foundRecords).containsExactlyInAnyOrder(
+            createdRecord,
+            timeEntryRecordBuilder()
+                .id(1)
+                .projectId(10)
+                .userId(20)
+                .date(LocalDate.parse("2017-01-30"))
+                .hours(8)
+                .build()
+        );
+    }
 
     @Test
     public void testFind() {
@@ -29,14 +55,14 @@ public class TimeEntryRepositoryTest {
             .hours(8)
             .build();
 
-        assertThat(maybeRecord, equalTo(Optional.of(expectedRecord)));
+        assertThat(maybeRecord).isEqualTo(Optional.of(expectedRecord));
     }
 
     @Test
     public void testFind_whenNotFound() {
         Optional<TimeEntryRecord> maybeRecord = repo.find(10);
 
-        assertThat(maybeRecord, equalTo(Optional.empty()));
+        assertThat(maybeRecord).isEqualTo(Optional.empty());
     }
 
     @Test
@@ -52,11 +78,11 @@ public class TimeEntryRepositoryTest {
         TimeEntryRecord created = repo.create(fields);
 
 
-        assertThat(created.id, not(equalTo(0L)));
-        assertThat(created.projectId, equalTo(3L));
-        assertThat(created.userId, equalTo(2L));
-        assertThat(created.date, equalTo(LocalDate.parse("2018-02-25")));
-        assertThat(created.hours, equalTo(16));
+        assertThat(created.id).isNotEqualTo(0L);
+        assertThat(created.projectId).isEqualTo(3L);
+        assertThat(created.userId).isEqualTo(2L);
+        assertThat(created.date).isEqualTo(LocalDate.parse("2018-02-25"));
+        assertThat(created.hours).isEqualTo(16);
 
         TimeEntryRecord expectedRecord = timeEntryRecordBuilder()
             .id(created.id)
@@ -66,6 +92,6 @@ public class TimeEntryRepositoryTest {
             .hours(16)
             .build();
         Optional<TimeEntryRecord> maybePersistedRecord = repo.find(created.id);
-        assertThat(maybePersistedRecord, equalTo(Optional.of(expectedRecord)));
+        assertThat(maybePersistedRecord).isEqualTo(Optional.of(expectedRecord));
     }
 }

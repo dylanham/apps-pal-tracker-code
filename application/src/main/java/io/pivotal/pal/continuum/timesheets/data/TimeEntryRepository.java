@@ -3,11 +3,10 @@ package io.pivotal.pal.continuum.timesheets.data;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord.timeEntryRecordBuilder;
+import static java.util.Collections.unmodifiableList;
 
 @Repository
 public class TimeEntryRepository {
@@ -24,6 +23,10 @@ public class TimeEntryRepository {
 
     private long lastId = 1L;
 
+
+    public List<TimeEntryRecord> findAll() {
+        return unmodifiableList(new ArrayList<>(records));
+    }
 
     public Optional<TimeEntryRecord> find(long id) {
         return records.stream()

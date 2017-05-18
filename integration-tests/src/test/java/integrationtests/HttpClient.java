@@ -12,30 +12,38 @@ class HttpClient {
     private final OkHttpClient okHttp = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    Response get(String url) throws IOException {
+    Response get(String url) {
         Request request = new Request.Builder().url(url).build();
         return fetchBodyString(request);
     }
 
-    Response post(String url, Map<String, Object> jsonBody) throws IOException {
-        Request request = new Request.Builder()
-            .url(url)
-            .post(RequestBody.create(JSON, objectMapper.writeValueAsString(jsonBody)))
-            .build();
+    Response post(String url, Map<String, Object> jsonBody) {
+        try {
+            Request request = new Request.Builder()
+                .url(url)
+                .post(RequestBody.create(JSON, objectMapper.writeValueAsString(jsonBody)))
+                .build();
 
-        return fetchBodyString(request);
+            return fetchBodyString(request);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
-    private Response fetchBodyString(Request request) throws IOException {
-        okhttp3.Response response = okHttp.newCall(request).execute();
-        ResponseBody body = response.body();
+    private Response fetchBodyString(Request request) {
+        try {
+            okhttp3.Response response = okHttp.newCall(request).execute();
+            ResponseBody body = response.body();
 
-        if (body == null) {
-            return new Response(response.code(), "");
+            if (body == null) {
+                return new Response(response.code(), "");
+            }
+
+            return new Response(response.code(), body.string());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        return new Response(response.code(), body.string());
     }
 
     public static class Response {
