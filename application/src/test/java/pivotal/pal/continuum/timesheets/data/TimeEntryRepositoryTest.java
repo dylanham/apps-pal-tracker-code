@@ -94,4 +94,34 @@ public class TimeEntryRepositoryTest {
         Optional<TimeEntryRecord> maybePersistedRecord = repo.find(created.id);
         assertThat(maybePersistedRecord).isEqualTo(Optional.of(expectedRecord));
     }
+
+    @Test
+    public void testUpdate() {
+        TimeEntryFields fields = timeEntryFieldsBuilder()
+            .projectId(3)
+            .userId(2)
+            .date(LocalDate.parse("2018-02-25"))
+            .hours(16)
+            .build();
+
+
+        TimeEntryRecord updated = repo.update(1, fields);
+
+
+        assertThat(updated.id).isEqualTo(1L);
+        assertThat(updated.projectId).isEqualTo(3L);
+        assertThat(updated.userId).isEqualTo(2L);
+        assertThat(updated.date).isEqualTo(LocalDate.parse("2018-02-25"));
+        assertThat(updated.hours).isEqualTo(16);
+
+        TimeEntryRecord expectedRecord = timeEntryRecordBuilder()
+            .id(1)
+            .projectId(3)
+            .userId(2)
+            .date(LocalDate.parse("2018-02-25"))
+            .hours(16)
+            .build();
+        Optional<TimeEntryRecord> maybePersistedRecord = repo.find(1);
+        assertThat(maybePersistedRecord).isEqualTo(Optional.of(expectedRecord));
+    }
 }

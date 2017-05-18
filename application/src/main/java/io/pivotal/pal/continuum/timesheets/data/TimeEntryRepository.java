@@ -35,15 +35,28 @@ public class TimeEntryRepository {
     }
 
     public TimeEntryRecord create(TimeEntryFields fields) {
-        TimeEntryRecord newRecord = timeEntryRecordBuilder()
-            .id(++lastId)
+        TimeEntryRecord newRecord = buildRecord(++lastId, fields);
+        records.add(newRecord);
+        return newRecord;
+    }
+
+    public TimeEntryRecord update(long id, TimeEntryFields fields) {
+        find(id).ifPresent(record -> {
+            records.remove(record);
+            records.add(buildRecord(id, fields));
+        });
+
+        return find(id).orElse(null);
+    }
+
+
+    private TimeEntryRecord buildRecord(long id, TimeEntryFields fields) {
+        return timeEntryRecordBuilder()
+            .id(id)
             .projectId(fields.projectId)
             .userId(fields.userId)
             .date(fields.date)
             .hours(fields.hours)
             .build();
-
-        records.add(newRecord);
-        return newRecord;
     }
 }

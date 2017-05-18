@@ -36,8 +36,9 @@ public class IntegrationTest {
     public void test() {
         testHello();
         testShowTimeEntry();
-        testCreateTimeEntry();
+        int createdId = testCreateTimeEntry();
         testListTimeEntries();
+        testUpdateTimeEntry(createdId);
     }
 
     private void testHello() {
@@ -60,7 +61,7 @@ public class IntegrationTest {
             .hasInt("$.hours", 8);
     }
 
-    private void testCreateTimeEntry() {
+    private int testCreateTimeEntry() {
         Response response = httpClient.post("http://localhost:8080/time-entries", jsonMapBuilder()
             .put("projectId", 110)
             .put("userId", 201)
@@ -76,6 +77,8 @@ public class IntegrationTest {
             .hasInt("$.userId", 201)
             .hasString("$.date", "2017-05-20")
             .hasInt("$.hours", 6);
+
+        return parse(response.body).read("$.id", Integer.class);
     }
 
     private void testListTimeEntries() {
@@ -84,5 +87,23 @@ public class IntegrationTest {
         assertThat(response.status).isEqualTo(200);
         assertThat(parse(response.body))
             .hasInt("$.timeEntries.length()", 2);
+    }
+
+    private void testUpdateTimeEntry(int entryId) {
+        Response response = httpClient.put("http://localhost:8080/time-entries/" + entryId, jsonMapBuilder()
+            .put("projectId", 111)
+            .put("userId", 211)
+            .put("date", "2017-05-21")
+            .put("hours", 8)
+            .build()
+        );
+
+        assertThat(response.status).isEqualTo(200);
+        assertThat(parse(response.body))
+            .hasInt("$.id", entryId)
+            .hasInt("$.projectId", 111)
+            .hasInt("$.userId", 211)
+            .hasString("$.date", "2017-05-21")
+            .hasInt("$.hours", 8);
     }
 }
