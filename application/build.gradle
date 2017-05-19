@@ -7,14 +7,21 @@ repositories {
 
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
+    compile "org.springframework.boot:spring-boot-starter-jdbc"
+    compile "mysql:mysql-connector-java:$mysqlVersion"
 
     testCompile "junit:junit:4.12"
     testCompile "org.mockito:mockito-core:2.7.22"
     testCompile "org.assertj:assertj-core:3.7.0"
 }
 
-bootRun {
-    environment([
-        "APPLICATION_MESSAGE" : "Hello from bootRun"
-    ])
-}
+bootRun.environment([
+    "APPLICATION_MESSAGE"       : "Hello from bootRun",
+    "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_dev?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
+    "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum")
+])
+
+test.environment([
+    "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_application_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
+    "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum")
+])

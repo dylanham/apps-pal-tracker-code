@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        springBootVersion = "1.5.2.RELEASE"
+        springBootVersion = "1.5.3.RELEASE"
+        springVersion = "4.3.8.RELEASE"
         mysqlVersion = "6.0.6"
     }
 
@@ -12,4 +13,16 @@ buildscript {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion"
         classpath "mysql:mysql-connector-java:$mysqlVersion"
     }
+}
+
+def getEnv(String name, String defaultValue = null) {
+    def envValue = System.getenv(name)
+
+    if (defaultValue == null && envValue == null) {
+        throw new IllegalStateException("Environment variable $name is missing.")
+    } else if (envValue == null) {
+        return defaultValue
+    }
+
+    return envValue
 }

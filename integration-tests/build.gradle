@@ -10,8 +10,15 @@ dependencies {
     testCompile "com.fasterxml.jackson.core:jackson-databind:2.8.8.1"
     testCompile "org.assertj:assertj-core:3.7.0"
     testCompile "com.jayway.jsonpath:json-path:2.2.0"
+    testCompile "mysql:mysql-connector-java:$mysqlVersion"
+    testCompile "org.springframework:spring-jdbc:$springVersion"
 }
 
 test {
     dependsOn(":application:assemble")
+
+    environment([
+        "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_integration_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
+        "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum")
+    ])
 }

@@ -1,9 +1,16 @@
 package io.pivotal.pal.continuum.timesheets.data;
 
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.*;
+import javax.sql.DataSource;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.List;
+import java.util.Optional;
 
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord.timeEntryRecordBuilder;
 import static java.util.Collections.unmodifiableList;
@@ -11,56 +18,65 @@ import static java.util.Collections.unmodifiableList;
 @Repository
 public class TimeEntryRepository {
 
-    private final Set<TimeEntryRecord> records = new HashSet<TimeEntryRecord>() {{
-        add(timeEntryRecordBuilder()
-            .id(1)
-            .projectId(10)
-            .userId(20)
-            .date(LocalDate.parse("2017-01-30"))
-            .hours(8)
-            .build());
-    }};
+    private final JdbcTemplate jdbcTemplate;
 
-    private long lastId = 1L;
+    public TimeEntryRepository(DataSource dataSource) {
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
 
     public List<TimeEntryRecord> findAll() {
-        return unmodifiableList(new ArrayList<>(records));
+        List<TimeEntryRecord> records = jdbcTemplate.query("SELECT * FROM time_entry", rowMapper);
+        return unmodifiableList(records);
     }
 
     public Optional<TimeEntryRecord> find(long id) {
-        return records.stream()
-            .filter(record -> record.id == id)
-            .findFirst();
+        List<TimeEntryRecord> records = jdbcTemplate.query("SELECT * FROM time_entry WHERE id = ? LIMIT 1", rowMapper, id);
+        return records.stream().findFirst();
     }
 
     public TimeEntryRecord create(TimeEntryFields fields) {
-        TimeEntryRecord newRecord = buildRecord(++lastId, fields);
-        records.add(newRecord);
-        return newRecord;
+        GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update((connection) -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                "INSERT INTO time_entry (project_id, user_id, date, hours) VALUES (?, ?, ?, ?)",
+                Statement.RETURN_GENERATED_KEYS
+            );
+            preparedStatement.setLong(1, fields.projectId);
+            preparedStatement.setLong(2, fields.userId);
+            preparedStatement.setDate(3, Date.valueOf(fields.date));
+            preparedStatement.setInt(4, fields.hours);
+            return preparedStatement;
+        }, keyHolder);
+
+        long createdId = keyHolder.getKey().longValue();
+
+        return find(createdId).orElseThrow(() -> new IllegalStateException("Record somehow not created"));
     }
 
     public TimeEntryRecord update(long id, TimeEntryFields fields) {
-        find(id).ifPresent(record -> {
-            records.remove(record);
-            records.add(buildRecord(id, fields));
-        });
+        jdbcTemplate.update("UPDATE time_entry SET project_id = ?, user_id = ?, date = ?, hours = ? WHERE id = ?",
+            fields.projectId,
+            fields.userId,
+            fields.date,
+            fields.hours,
+            id
+        );
 
-        return find(id).orElse(null);
+        return find(id).orElseThrow(() -> new IllegalStateException("Updated record could not be read from db"));
     }
 
     public void delete(long id) {
-        find(id).ifPresent(records::remove);
+        jdbcTemplate.update("DELETE FROM time_entry WHERE id = ?", id);
     }
 
 
-    private TimeEntryRecord buildRecord(long id, TimeEntryFields fields) {
-        return timeEntryRecordBuilder()
-            .id(id)
-            .projectId(fields.projectId)
-            .userId(fields.userId)
-            .date(fields.date)
-            .hours(fields.hours)
-            .build();
-    }
+    private final RowMapper<TimeEntryRecord> rowMapper = (rs, rowNum) -> timeEntryRecordBuilder()
+        .id(rs.getLong("id"))
+        .projectId(rs.getLong("project_id"))
+        .userId(rs.getLong("user_id"))
+        .date(rs.getDate("date").toLocalDate())
+        .hours(rs.getInt("hours"))
+        .build();
 }

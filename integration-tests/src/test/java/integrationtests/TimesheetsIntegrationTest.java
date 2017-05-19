@@ -1,6 +1,7 @@
 package integrationtests;
 
 import integrationtests.HttpClient.Response;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import static com.jayway.jsonpath.JsonPath.parse;
 import static integrationtests.MapBuilder.jsonMapBuilder;
@@ -8,14 +9,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimesheetsIntegrationTest {
 
+    private final JdbcTemplate template;
     private final HttpClient httpClient;
 
-    public TimesheetsIntegrationTest(HttpClient httpClient) {
+    public TimesheetsIntegrationTest(JdbcTemplate template, HttpClient httpClient) {
+        this.template = template;
         this.httpClient = httpClient;
     }
 
 
     public void run() {
+        template.execute("DELETE FROM time_entry;");
+        template.execute("INSERT INTO time_entry (id, project_id, user_id, date, hours) VALUES " +
+            "(1, 10, 20, '2017-01-30', 8);");
+
+
         testShow();
         int createdId = testCreate();
         testList();

@@ -4,6 +4,7 @@ import integrationtests.HttpClient.Response;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class IntegrationTest {
 
     private HttpClient httpClient = new HttpClient();
+    private JdbcTemplate template = new JdbcTemplate(TestDataSourceFactory.create());
     private ApplicationServer server = new ApplicationServer();
     private Map<String, String> integrationEnv = envMapBuilder()
         .put("APPLICATION_MESSAGE", "Hello from the integration test!")
@@ -32,7 +34,7 @@ public class IntegrationTest {
     @Test
     public void test() {
         testHello();
-        new TimesheetsIntegrationTest(httpClient).run();
+        new TimesheetsIntegrationTest(template, httpClient).run();
         new BacklogIntegrationTest(httpClient).run();
     }
 
