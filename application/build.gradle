@@ -9,6 +9,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "org.springframework.boot:spring-boot-starter-security"
     compile "mysql:mysql-connector-java:$mysqlVersion"
 
     testCompile "junit:junit:4.12"
@@ -17,18 +18,21 @@ dependencies {
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
 
-bootRun.environment([
+def env = [
+    "SPRING_JPA_HIBERNATE_NAMING-STRATEGY"   : getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
+    "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
+    "SECURITY_USER"                          : getEnv("SECURITY_USER", "user"),
+    "SECURITY_PASSWORD"                      : getEnv("SECURITY_PASSWORD", "password"),
+]
+
+bootRun.environment(env + [
     "APPLICATION_MESSAGE"       : "Hello from bootRun",
     "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_dev?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
     "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
-    "SPRING_JPA_HIBERNATE_NAMING-STRATEGY": getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
-    "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
 ])
 
-test.environment([
+test.environment(env + [
     "APPLICATION_MESSAGE"       : "Hello from application tests",
     "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_application_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
     "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
-    "SPRING_JPA_HIBERNATE_NAMING-STRATEGY": getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
-    "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
 ])

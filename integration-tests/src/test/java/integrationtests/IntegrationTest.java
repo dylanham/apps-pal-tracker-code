@@ -18,6 +18,10 @@ public class IntegrationTest {
     private ApplicationServer server = new ApplicationServer();
     private Map<String, String> integrationEnv = envMapBuilder()
         .put("APPLICATION_MESSAGE", "Hello from the integration test!")
+        .put("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy")
+        .put("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect")
+        .put("SECURITY_USER", "user")
+        .put("SECURITY_PASSWORD", "password")
         .build();
 
 

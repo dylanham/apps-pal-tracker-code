@@ -18,9 +18,7 @@ test {
     dependsOn(":application:assemble")
 
     environment([
-        "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_integration_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
-        "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
-        "SPRING_JPA_HIBERNATE_NAMING-STRATEGY": getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
-        "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
+        "SPRING_DATASOURCE_URL"                  : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_integration_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
+        "SPRING_DATASOURCE_USERNAME"             : getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
     ])
 }
