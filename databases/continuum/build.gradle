@@ -1,38 +1,5 @@
-import org.flywaydb.gradle.FlywayExtension
-import org.flywaydb.gradle.task.FlywayCleanTask
-import org.flywaydb.gradle.task.FlywayMigrateTask
-import org.flywaydb.gradle.task.FlywayRepairTask
+import io.pivotal.pal.continuum.gradlebuild.CfMigrationPlugin
+import io.pivotal.pal.continuum.gradlebuild.LocalMigrationPlugin
 
-plugins {
-    id "org.flywaydb.flyway" version "4.1.2"
-}
-
-Closure configDbExtension(String dbName) {
-    return {
-        url = "jdbc:mysql://localhost:3306/$dbName?useSSL=false&serverTimezone=UTC"
-        user = "continuum"
-        outOfOrder = false
-        locations = ["filesystem:$projectDir"]
-        return it
-    }
-}
-
-Closure configTask(String dbName) {
-    return {
-        extension = new FlywayExtension().with(configDbExtension(dbName))
-    }
-}
-
-flyway configDbExtension("continuum_dev")
-
-task "testApplicationMigrate", type: FlywayMigrateTask, configTask("continuum_application_test")
-task "testApplicationClean", type: FlywayCleanTask, configTask("continuum_application_test")
-task "testApplicationRepair", type: FlywayRepairTask, configTask("continuum_application_test")
-
-task "testIntegrationMigrate", type: FlywayMigrateTask, configTask("continuum_integration_test")
-task "testIntegrationClean", type: FlywayCleanTask, configTask("continuum_integration_test")
-task "testIntegrationRepair", type: FlywayRepairTask, configTask("continuum_integration_test")
-
-task "testMigrate", description: "Migrate all test databases", dependsOn: ["testApplicationMigrate", "testIntegrationMigrate"]
-task "testClean", description: "Clean all test databases", dependsOn: ["testApplicationClean", "testIntegrationClean"]
-task "testRepair", description: "Repair all test databases", dependsOn: ["testApplicationRepair", "testIntegrationRepair"]
+apply plugin: LocalMigrationPlugin
+apply plugin: CfMigrationPlugin

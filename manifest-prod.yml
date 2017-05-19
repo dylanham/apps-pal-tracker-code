@@ -6,3 +6,6 @@ applications:
   - route: app-continuum.cfapps.io
   env:
     APPLICATION_MESSAGE: Hello from cloud foundry, we are live!
+  services:
+  - continuum-database-production
+
