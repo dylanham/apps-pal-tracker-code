@@ -1,6 +1,7 @@
 package integrationtests;
 
 import integrationtests.HttpClient.Response;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import static com.jayway.jsonpath.JsonPath.parse;
 import static integrationtests.JsonPathAssert.assertThat;
@@ -9,14 +10,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BacklogIntegrationTest {
 
+    private final JdbcTemplate template;
     private final HttpClient httpClient;
 
-    public BacklogIntegrationTest(HttpClient httpClient) {
+    public BacklogIntegrationTest(JdbcTemplate template, HttpClient httpClient) {
+        this.template = template;
         this.httpClient = httpClient;
     }
 
 
     public void run() {
+        template.execute("DELETE FROM story");
+        template.execute("INSERT INTO story (id, project_id, name) VALUES " +
+            "(1, 10, 'Initialize Git Repo')");
+
         testShow();
         int createdId = testCreate();
         testList();

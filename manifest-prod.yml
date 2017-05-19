@@ -6,6 +6,8 @@ applications:
   - route: app-continuum.cfapps.io
   env:
     APPLICATION_MESSAGE: Hello from cloud foundry, we are live!
+    SPRING_JPA_HIBERNATE_NAMING-STRATEGY: org.hibernate.cfg.ImprovedNamingStrategy
+    SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5Dialect
   services:
   - continuum-database-production
 

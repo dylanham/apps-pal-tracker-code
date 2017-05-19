@@ -6,5 +6,8 @@ applications:
   - route: app-continuum-review.cfapps.io
   env:
     APPLICATION_MESSAGE: Hello from cloud foundry!
+    SPRING_JPA_HIBERNATE_NAMING-STRATEGY: org.hibernate.cfg.ImprovedNamingStrategy
+    SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL5Dialect
+
   services:
   - continuum-database-review

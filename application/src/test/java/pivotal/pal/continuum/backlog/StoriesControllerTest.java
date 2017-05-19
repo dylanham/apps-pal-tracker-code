@@ -4,7 +4,6 @@ import io.pivotal.pal.continuum.backlog.StoriesController;
 import io.pivotal.pal.continuum.backlog.StoryForm;
 import io.pivotal.pal.continuum.backlog.StoryInfo;
 import io.pivotal.pal.continuum.backlog.StoryInfoList;
-import io.pivotal.pal.continuum.backlog.data.StoryFields;
 import io.pivotal.pal.continuum.backlog.data.StoryRecord;
 import io.pivotal.pal.continuum.backlog.data.StoryRepository;
 import org.junit.Test;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,7 +60,7 @@ public class StoriesControllerTest {
             .id(112L)
             .name("Story #1")
             .build();
-        doReturn(Optional.of(record)).when(repository).find(112L);
+        doReturn(record).when(repository).findOne(112L);
 
 
         ResponseEntity<StoryInfo> entity = controller.show(112L);
@@ -78,7 +76,7 @@ public class StoriesControllerTest {
 
     @Test
     public void testShow_WhenNotFound() {
-        doReturn(Optional.empty()).when(repository).find(115L);
+        doReturn(null).when(repository).findOne(115L);
 
 
         ResponseEntity<StoryInfo> entity = controller.show(115L);
@@ -93,7 +91,8 @@ public class StoriesControllerTest {
         StoryForm form = testStoryFormBuilder()
             .name("Story #10")
             .build();
-        StoryFields fields = testStoryFieldsBuilder()
+        StoryRecord recordToSave = testStoryRecordBuilder()
+            .id(null)
             .name("Story #10")
             .build();
         StoryRecord createdRecord = testStoryRecordBuilder()
@@ -101,7 +100,7 @@ public class StoriesControllerTest {
             .name("Story #10")
             .build();
 
-        doReturn(createdRecord).when(repository).create(fields);
+        doReturn(createdRecord).when(repository).save(recordToSave);
 
 
         ResponseEntity<StoryInfo> entity = controller.create(form);
@@ -120,7 +119,8 @@ public class StoriesControllerTest {
         StoryForm form = testStoryFormBuilder()
             .name("Story #21")
             .build();
-        StoryFields fields = testStoryFieldsBuilder()
+        StoryRecord recordToSave = testStoryRecordBuilder()
+            .id(121L)
             .name("Story #21")
             .build();
         StoryRecord updatedRecord = testStoryRecordBuilder()
@@ -128,7 +128,7 @@ public class StoriesControllerTest {
             .name("Story #21")
             .build();
 
-        doReturn(updatedRecord).when(repository).update(121L, fields);
+        doReturn(updatedRecord).when(repository).save(recordToSave);
 
 
         ResponseEntity<StoryInfo> entity = controller.update(121L, form);

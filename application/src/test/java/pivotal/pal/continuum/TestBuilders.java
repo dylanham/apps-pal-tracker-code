@@ -2,7 +2,6 @@ package pivotal.pal.continuum;
 
 import io.pivotal.pal.continuum.backlog.StoryForm;
 import io.pivotal.pal.continuum.backlog.StoryInfo;
-import io.pivotal.pal.continuum.backlog.data.StoryFields;
 import io.pivotal.pal.continuum.backlog.data.StoryRecord;
 import io.pivotal.pal.continuum.timesheets.TimeEntryForm;
 import io.pivotal.pal.continuum.timesheets.TimeEntryInfo;
@@ -13,7 +12,6 @@ import java.time.LocalDate;
 
 import static io.pivotal.pal.continuum.backlog.StoryForm.storyFormBuilder;
 import static io.pivotal.pal.continuum.backlog.StoryInfo.storyInfoBuilder;
-import static io.pivotal.pal.continuum.backlog.data.StoryFields.storyFieldsBuilder;
 import static io.pivotal.pal.continuum.backlog.data.StoryRecord.storyRecordBuilder;
 import static io.pivotal.pal.continuum.timesheets.TimeEntryForm.timeEntryFormBuilder;
 import static io.pivotal.pal.continuum.timesheets.TimeEntryInfo.timeEntryInfoBuilder;
@@ -58,7 +56,7 @@ public class TestBuilders {
 
     public static StoryRecord.Builder testStoryRecordBuilder() {
         return storyRecordBuilder()
-            .id(100)
+            .id(100L)
             .projectId(2000)
             .name("First commit");
     }
@@ -66,12 +64,6 @@ public class TestBuilders {
     public static StoryInfo.Builder testStoryInfoBuilder() {
         return storyInfoBuilder()
             .id(100)
-            .projectId(2000)
-            .name("First commit");
-    }
-
-    public static StoryFields.Builder testStoryFieldsBuilder() {
-        return storyFieldsBuilder()
             .projectId(2000)
             .name("First commit");
     }

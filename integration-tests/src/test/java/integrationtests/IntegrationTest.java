@@ -35,7 +35,7 @@ public class IntegrationTest {
     public void test() {
         testHello();
         new TimesheetsIntegrationTest(template, httpClient).run();
-        new BacklogIntegrationTest(httpClient).run();
+        new BacklogIntegrationTest(template, httpClient).run();
     }
 
     private void testHello() {

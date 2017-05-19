@@ -1,8 +1,14 @@
 package io.pivotal.pal.continuum.backlog.data;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "story")
 public class StoryRecord {
 
-    public final long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public final Long id;
     public final long projectId;
     public final String name;
 
@@ -12,12 +18,16 @@ public class StoryRecord {
         name = builder.name;
     }
 
+    private StoryRecord() {
+        this(storyRecordBuilder());
+    }
+
     public static Builder storyRecordBuilder() {
         return new Builder();
     }
 
     public static class Builder {
-        private long id;
+        private Long id;
         private long projectId;
         private String name;
 
@@ -25,7 +35,7 @@ public class StoryRecord {
             return new StoryRecord(this);
         }
 
-        public Builder id(long id) {
+        public Builder id(Long id) {
             this.id = id;
             return this;
         }
@@ -46,16 +56,16 @@ public class StoryRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StoryRecord storyRecord = (StoryRecord) o;
+        StoryRecord that = (StoryRecord) o;
 
-        if (id != storyRecord.id) return false;
-        if (projectId != storyRecord.projectId) return false;
-        return name != null ? name.equals(storyRecord.name) : storyRecord.name == null;
+        if (projectId != that.projectId) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (int) (projectId ^ (projectId >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
