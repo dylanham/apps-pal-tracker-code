@@ -19,6 +19,16 @@ run:
   args:
     - -exc
     - |
+      export DEBIAN_FRONTEND="noninteractive"
+      apt-get update
+      apt-get -y install mariadb-server
+
       cd app-continuum
-      ./gradlew clean build
+
+      service mysql start
+      mysql -uroot < databases/create_databases.sql
+
+      ./gradlew testMigrate clean build
       cp application/build/libs/application.jar ../build-output/app-continuum-`cat ../version/number`.jar
+
+      service mysql stop
