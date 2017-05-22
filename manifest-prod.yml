@@ -11,4 +11,5 @@ applications:
     SECURITY_FORCE_HTTPS: true
   services:
   - continuum-database-production
+  - continuum-identity-production
 

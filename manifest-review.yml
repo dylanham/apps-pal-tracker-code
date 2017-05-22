@@ -11,3 +11,4 @@ applications:
     SECURITY_FORCE_HTTPS: true
   services:
   - continuum-database-review
+  - continuum-identity-review
