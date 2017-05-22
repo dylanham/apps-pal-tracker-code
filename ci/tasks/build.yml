@@ -28,6 +28,7 @@ run:
       service mysql start
       mysql -uroot < databases/create_databases.sql
 
+      export SERVER_START_TIMEOUT=60
       ./gradlew testMigrate clean build
       cp application/build/libs/application.jar ../build-output/app-continuum-`cat ../version/number`.jar
 

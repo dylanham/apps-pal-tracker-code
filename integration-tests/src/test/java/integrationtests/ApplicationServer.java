@@ -38,7 +38,7 @@ class ApplicationServer {
 
     private void waitUntilServerIsUp() throws InterruptedException {
         String port = "8080";
-        int timeout = 10;
+        int timeout = Integer.parseInt(getEnv("SERVER_START_TIMEOUT", "20"));
         Instant start = Instant.now();
         boolean isUp = false;
 
@@ -57,5 +57,15 @@ class ApplicationServer {
                 Thread.sleep(200);
             }
         }
+    }
+
+    private String getEnv(String name, String defaultValue) {
+        String value = System.getenv(name);
+
+        if (value == null) {
+            return defaultValue;
+        }
+
+        return value;
     }
 }
