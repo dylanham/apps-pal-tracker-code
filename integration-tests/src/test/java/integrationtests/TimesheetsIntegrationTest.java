@@ -4,6 +4,7 @@ import integrationtests.HttpClient.Response;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static com.jayway.jsonpath.JsonPath.parse;
+import static integrationtests.JsonPathAssert.assertThat;
 import static integrationtests.MapBuilder.jsonMapBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +37,7 @@ public class TimesheetsIntegrationTest {
 
         assertThat(response.status).isEqualTo(200);
 
-        JsonPathAssert.assertThat(parse(response.body))
+        assertThat(parse(response.body))
             .hasInt("$.id", 1)
             .hasInt("$.projectId", 10)
             .hasInt("$.userId", 20)
@@ -54,7 +55,7 @@ public class TimesheetsIntegrationTest {
         );
 
         assertThat(response.status).isEqualTo(201);
-        JsonPathAssert.assertThat(parse(response.body))
+        assertThat(parse(response.body))
             .hasInt("$.id")
             .hasInt("$.projectId", 110)
             .hasInt("$.userId", 201)
@@ -68,7 +69,7 @@ public class TimesheetsIntegrationTest {
         Response response = httpClient.get("http://localhost:8080/time-entries");
 
         assertThat(response.status).isEqualTo(200);
-        JsonPathAssert.assertThat(parse(response.body))
+        assertThat(parse(response.body))
             .hasInt("$.timeEntries.length()", 2);
     }
 
@@ -82,7 +83,7 @@ public class TimesheetsIntegrationTest {
         );
 
         assertThat(response.status).isEqualTo(200);
-        JsonPathAssert.assertThat(parse(response.body))
+        assertThat(parse(response.body))
             .hasInt("$.id", entryId)
             .hasInt("$.projectId", 111)
             .hasInt("$.userId", 211)

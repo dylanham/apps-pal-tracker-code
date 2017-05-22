@@ -54,10 +54,9 @@ class CfMigrationPlugin implements Plugin<Project> {
 
         getMysqlCredentials(cfAppName)?.with { credentials ->
 
-            def databaseName = credentials["name"]
             extension.user = credentials["username"]
             extension.password = credentials["password"]
-            extension.url = "jdbc:mysql://127.0.0.1:63306/" + databaseName
+            extension.url = "jdbc:mysql://127.0.0.1:63306/${credentials["name"]}"
         }
 
         extension.locations = ["filesystem:$project.projectDir/migrations"]

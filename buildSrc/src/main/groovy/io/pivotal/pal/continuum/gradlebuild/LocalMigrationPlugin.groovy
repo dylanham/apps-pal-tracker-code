@@ -16,8 +16,8 @@ class LocalMigrationPlugin implements Plugin<Project> {
         def defaultExtension = project.extensions.findByType(FlywayExtension)
         configureFlywayExtension(defaultExtension, project, "continuum_dev")
 
-        addDbTasks(project, "Application", "continuum_application_test")
-        addDbTasks(project, "Integration", "continuum_integration_test")
+        addTestDbTasks(project, "Application", "continuum_application_test")
+        addTestDbTasks(project, "Integration", "continuum_integration_test")
 
         project.task "testMigrate", group: "Flyway", description: "Migrate all test databases",
             dependsOn: ["testApplicationMigrate", "testIntegrationMigrate"]
@@ -29,7 +29,7 @@ class LocalMigrationPlugin implements Plugin<Project> {
             dependsOn: ["testApplicationRepair", "testIntegrationRepair"]
     }
 
-    private static addDbTasks(Project project, String name, String dbName) {
+    private static addTestDbTasks(Project project, String name, String dbName) {
         def flywayExtension = configureFlywayExtension(new FlywayExtension(), project, dbName)
 
         project.task("test${name}Migrate", type: FlywayMigrateTask) { extension = flywayExtension }
