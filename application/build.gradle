@@ -10,6 +10,7 @@ dependencies {
     compile "org.springframework.boot:spring-boot-starter-jdbc"
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.springframework.boot:spring-boot-starter-security"
+    compile "org.springframework.security.oauth:spring-security-oauth2"
     compile "mysql:mysql-connector-java:$mysqlVersion"
 
     testCompile "junit:junit:4.12"
@@ -21,8 +22,9 @@ dependencies {
 def env = [
     "SPRING_JPA_HIBERNATE_NAMING-STRATEGY"   : getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
     "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
-    "SECURITY_USER"                          : getEnv("SECURITY_USER", "user"),
-    "SECURITY_PASSWORD"                      : getEnv("SECURITY_PASSWORD", "password"),
+    "SECURITY_OAUTH2_CLIENT_CLIENT_ID"       : getEnv("SECURITY_OAUTH2_CLIENT_CLIENT_ID", "please-use-env-variable"),
+    "SECURITY_OAUTH2_CLIENT_CLIENT_SECRET"   : getEnv("SECURITY_OAUTH2_CLIENT_CLIENT_SECRET", "please-use-env-variable"),
+    "SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI": getEnv("SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI", "http://localhost:8081/oauth/check_token"),
 ]
 
 bootRun.environment(env + [

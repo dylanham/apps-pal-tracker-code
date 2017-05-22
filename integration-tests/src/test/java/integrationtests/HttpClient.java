@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.Map;
 
 import static java.lang.String.format;
@@ -12,8 +11,15 @@ import static java.lang.String.format;
 class HttpClient {
 
     private static final MediaType JSON = MediaType.parse("application/json");
+
     private final OkHttpClient okHttp = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String bearerToken;
+
+
+    public HttpClient(String bearerToken) {
+        this.bearerToken = bearerToken;
+    }
 
     Response get(String url) {
         return fetch(new Request.Builder().url(url));
@@ -51,7 +57,7 @@ class HttpClient {
     private Response fetch(Request.Builder requestBuilder) {
         try {
             Request request = requestBuilder
-                .header("Authorization", format("Basic %s", credentials))
+                .header("Authorization", format("Bearer %s", bearerToken))
                 .build();
 
             okhttp3.Response response = okHttp.newCall(request).execute();
@@ -66,8 +72,6 @@ class HttpClient {
             throw new RuntimeException(e);
         }
     }
-
-    private static String credentials = Base64.getEncoder().encodeToString("user:password".getBytes());
 
     public static class Response {
         public final int status;

@@ -1,6 +1,8 @@
 package integrationtests;
 
 import integrationtests.HttpClient.Response;
+import integrationtests.oauth.MockOauthServer;
+import integrationtests.oauth.OauthServerInfo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,20 +15,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class IntegrationTest {
 
-    private HttpClient httpClient = new HttpClient();
+    private String bearerToken = "integration-bearer-token";
+    private HttpClient httpClient = new HttpClient(bearerToken);
     private JdbcTemplate template = new JdbcTemplate(TestDataSourceFactory.create());
-    private ApplicationServer server = new ApplicationServer();
-    private Map<String, String> integrationEnv = envMapBuilder()
-        .put("APPLICATION_MESSAGE", "Hello from the integration test!")
-        .put("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy")
-        .put("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect")
-        .put("SECURITY_USER", "user")
-        .put("SECURITY_PASSWORD", "password")
-        .build();
-
+    private ApplicationServer server = new ApplicationServer(httpClient);
 
     @Before
     public void setup() throws Exception {
+        OauthServerInfo oauthInfo = new MockOauthServer(bearerToken).start();
+
+        Map<String, String> integrationEnv = envMapBuilder()
+            .put("APPLICATION_MESSAGE", "Hello from the integration test!")
+            .put("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy")
+            .put("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect")
+            .put("SECURITY_OAUTH2_CLIENT_CLIENT_ID", oauthInfo.clientId)
+            .put("SECURITY_OAUTH2_CLIENT_CLIENT_SECRET", oauthInfo.clientSecret)
+            .put("SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI", oauthInfo.tokenInfoUri)
+            .build();
+
         server.start(integrationEnv);
     }
 

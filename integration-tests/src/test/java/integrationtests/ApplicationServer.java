@@ -10,9 +10,13 @@ import static org.junit.Assert.fail;
 class ApplicationServer {
 
     private final String workingDir = System.getProperty("user.dir");
-    private final HttpClient httpClient = new HttpClient();
+    private final HttpClient httpClient;
 
     private Process serverProcess;
+
+    ApplicationServer(HttpClient httpClient) {
+        this.httpClient = httpClient;
+    }
 
 
     void start(Map<String, String> env) throws IOException, InterruptedException {
