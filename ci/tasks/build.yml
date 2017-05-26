@@ -9,6 +9,10 @@ image_resource:
 
 inputs:
 - name: app-continuum
+- name: version
+
+outputs:
+- name: build-output
 
 run:
   path: bash
@@ -17,3 +21,4 @@ run:
     - |
       cd app-continuum
       ./gradlew clean build
+      cp application/build/libs/application.jar ../build-output/app-continuum-`cat ../version/number`.jar

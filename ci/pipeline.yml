@@ -7,11 +7,57 @@ resources:
     branch: master
     private_key: {{github-private-key}}
 
+- name: version
+  type: semver
+  source:
+    bucket: {{aws-bucket}}
+    key: app-continuum/current-version
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+
+- name: artifact
+  type: s3
+  source:
+    bucket: {{aws-bucket}}
+    regexp: app-continuum/app-continuum-(.*).jar
+    access_key_id: {{aws-access-key-id}}
+    secret_access_key: {{aws-secret-access-key}}
+
+- name: cf-review
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: {{deploy-username}}
+    password: {{deploy-password}}
+    organization: {{deploy-org}}
+    space: {{review-space}}
+
 
 jobs:
 - name: build
   plan:
   - get: app-continuum
     trigger: true
+  - get: version
+    params:
+      bump: patch
   - task: build and test
     file: app-continuum/ci/tasks/build.yml
+  - put: artifact
+    params:
+      file: build-output/app-continuum-*.jar
+  - put: version
+    params:
+      file: version/number
+
+- name: deploy-review
+  plan:
+  - get: app-continuum
+    passed: [build]
+  - get: artifact
+    trigger: true
+  - put: cf-review
+    params:
+      manifest: app-continuum/manifest-review.yml
+      path: artifact/app-continuum-*.jar
+      current_app_name: app-continuum-review
