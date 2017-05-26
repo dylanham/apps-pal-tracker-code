@@ -1,5 +1,6 @@
 package test.pivotal.pal.continuum.timesheets.data;
 
+import io.pivotal.pal.continuum.timesheets.data.TimeEntryFields;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static io.pivotal.pal.continuum.timesheets.data.TimeEntryFields.timeEntryFieldsBuilder;
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord.timeEntryRecordBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,5 +35,34 @@ public class TimeEntryRepositoryTest {
         Optional<TimeEntryRecord> maybeRecord = repo.find(10);
 
         assertThat(maybeRecord).isEmpty();
+    }
+
+    @Test
+    public void testCreate() {
+        TimeEntryFields fields = timeEntryFieldsBuilder()
+            .projectId(3)
+            .userId(2)
+            .date(LocalDate.parse("2018-02-25"))
+            .hours(16)
+            .build();
+
+
+        TimeEntryRecord created = repo.create(fields);
+
+
+        assertThat(created.id).isNotEqualTo(0L);
+        assertThat(created.projectId).isEqualTo(3L);
+        assertThat(created.userId).isEqualTo(2L);
+        assertThat(created.date).isEqualTo(LocalDate.parse("2018-02-25"));
+        assertThat(created.hours).isEqualTo(16);
+
+        assertThat(repo.find(created.id)).hasValue(timeEntryRecordBuilder()
+            .id(created.id)
+            .projectId(3)
+            .userId(2)
+            .date(LocalDate.parse("2018-02-25"))
+            .hours(16)
+            .build()
+        );
     }
 }
