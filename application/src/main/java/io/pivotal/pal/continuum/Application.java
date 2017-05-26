@@ -1,5 +1,6 @@
 package io.pivotal.pal.continuum;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,18 +20,7 @@ public class Application {
     }
 
     @Bean
-    public String message() {
-        return getEnv("APPLICATION_MESSAGE");
-    }
-
-
-    private String getEnv(String name) {
-        String value = System.getenv(name);
-
-        if (value == null) {
-            throw new IllegalStateException("Could not load environment variable " + name);
-        }
-
+    public String message(@Value("${application.message}") String value) {
         return value;
     }
 }

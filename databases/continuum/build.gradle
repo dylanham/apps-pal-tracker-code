@@ -3,3 +3,10 @@ import io.pivotal.pal.continuum.gradlebuild.LocalMigrationPlugin
 
 apply plugin: LocalMigrationPlugin
 apply plugin: CfMigrationPlugin
+
+databases {
+    devDatabase = "continuum_dev"
+    testDatabase = "continuum_test"
+    cfReviewApp = "app-continuum-review"
+    cfProdApp = "app-continuum"
+}

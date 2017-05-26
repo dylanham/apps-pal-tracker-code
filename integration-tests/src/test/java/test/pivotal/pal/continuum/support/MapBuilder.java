@@ -1,4 +1,4 @@
-package integrationtests;
+package test.pivotal.pal.continuum.support;
 
 import java.util.HashMap;
 import java.util.Map;

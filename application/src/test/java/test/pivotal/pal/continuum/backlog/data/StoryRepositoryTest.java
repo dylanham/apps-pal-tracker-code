@@ -1,4 +1,4 @@
-package pivotal.pal.continuum.backlog.data;
+package test.pivotal.pal.continuum.backlog.data;
 
 import io.pivotal.pal.continuum.Application;
 import io.pivotal.pal.continuum.backlog.data.StoryRecord;

@@ -1,4 +1,4 @@
-package pivotal.pal.continuum.timesheets;
+package test.pivotal.pal.continuum.timesheets;
 
 import io.pivotal.pal.continuum.timesheets.TimeEntriesController;
 import io.pivotal.pal.continuum.timesheets.TimeEntryForm;
@@ -18,7 +18,7 @@ import java.util.Optional;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static pivotal.pal.continuum.TestBuilders.*;
+import static test.pivotal.pal.continuum.TestBuilders.*;
 
 public class TimeEntriesControllerTest {
 

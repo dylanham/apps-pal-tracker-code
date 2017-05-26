@@ -1,4 +1,4 @@
-package pivotal.pal.continuum.backlog;
+package test.pivotal.pal.continuum.backlog;
 
 import io.pivotal.pal.continuum.backlog.StoriesController;
 import io.pivotal.pal.continuum.backlog.StoryForm;
@@ -15,7 +15,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static pivotal.pal.continuum.TestBuilders.*;
+import static test.pivotal.pal.continuum.TestBuilders.*;
 
 public class StoriesControllerTest {
 

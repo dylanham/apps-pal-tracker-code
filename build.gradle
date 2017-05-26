@@ -14,15 +14,3 @@ buildscript {
         classpath "mysql:mysql-connector-java:$mysqlVersion"
     }
 }
-
-def getEnv(String name, String defaultValue = null) {
-    def envValue = System.getenv(name)
-
-    if (defaultValue == null && envValue == null) {
-        throw new IllegalStateException("Environment variable $name is missing.")
-    } else if (envValue == null) {
-        return defaultValue
-    }
-
-    return envValue
-}

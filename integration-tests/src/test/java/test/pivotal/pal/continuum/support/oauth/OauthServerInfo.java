@@ -1,4 +1,4 @@
-package integrationtests.oauth;
+package test.pivotal.pal.continuum.support.oauth;
 
 public class OauthServerInfo {
     public final String clientId;

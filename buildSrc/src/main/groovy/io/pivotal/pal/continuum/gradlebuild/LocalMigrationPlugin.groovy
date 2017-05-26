@@ -11,40 +11,36 @@ class LocalMigrationPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.apply plugin: "org.flywaydb.flyway"
 
-        def defaultExtension = project.extensions.findByType(FlywayExtension)
-        configureFlywayExtension(defaultExtension, project, "continuum_dev")
+        project.with {
+            def databases = new DatabasesExtension()
 
-        addTestDbTasks(project, "Application", "continuum_application_test")
-        addTestDbTasks(project, "Integration", "continuum_integration_test")
+            extensions.add("flyway", new FlywayExtension())
+            extensions.add("databases", databases)
 
-        project.task "testMigrate", group: "Flyway", description: "Migrate all test databases",
-            dependsOn: ["testApplicationMigrate", "testIntegrationMigrate"]
-
-        project.task "testClean", group: "Flyway", description: "Clean all test databases",
-            dependsOn: ["testApplicationClean", "testIntegrationClean"]
-
-        project.task "testRepair", group: "Flyway", description: "Repair all test databases",
-            dependsOn: ["testApplicationRepair", "testIntegrationRepair"]
+            afterEvaluate {
+                addDbTask(project, "dev", databases.devDatabase)
+                addDbTask(project, "test", databases.testDatabase)
+            }
+        }
     }
 
-    private static addTestDbTasks(Project project, String name, String dbName) {
-        def flywayExtension = configureFlywayExtension(new FlywayExtension(), project, dbName)
+    private static addDbTask(Project project, String name, String dbName) {
+        def flywayExtension = buildFlywayExtension(project, dbName)
 
-        project.task("test${name}Migrate", type: FlywayMigrateTask) { extension = flywayExtension }
-        project.task("test${name}Clean", type: FlywayCleanTask) { extension = flywayExtension }
-        project.task("test${name}Repair", type: FlywayRepairTask) { extension = flywayExtension }
+        project.task("${name}Migrate", type: FlywayMigrateTask, group: "Migration") { extension = flywayExtension }
+        project.task("${name}Clean", type: FlywayCleanTask, group: "Migration") { extension = flywayExtension }
+        project.task("${name}Repair", type: FlywayRepairTask, group: "Migration") { extension = flywayExtension }
     }
 
-    private static FlywayExtension configureFlywayExtension(FlywayExtension extension, Project project, String dbName) {
-        extension.with {
+    private static FlywayExtension buildFlywayExtension(Project project, String dbName) {
+        def ext = new FlywayExtension()
+        ext.with {
             url = "jdbc:mysql://localhost:3306/$dbName?useSSL=false&serverTimezone=UTC"
             user = "continuum"
             outOfOrder = false
             locations = ["filesystem:${project.projectDir}"]
         }
-
-        return extension
+        return ext
     }
 }

@@ -1,4 +1,4 @@
-package integrationtests;
+package test.pivotal.pal.continuum.support;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -7,19 +7,19 @@ import java.util.Map;
 
 import static org.junit.Assert.fail;
 
-class ApplicationServer {
+public class ApplicationServer {
 
     private final String workingDir = System.getProperty("user.dir");
     private final HttpClient httpClient;
 
     private Process serverProcess;
 
-    ApplicationServer(HttpClient httpClient) {
+    public ApplicationServer(HttpClient httpClient) {
         this.httpClient = httpClient;
     }
 
 
-    void start(Map<String, String> env) throws IOException, InterruptedException {
+    public void start(Map<String, String> env) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder()
             .command("java", "-jar", workingDir + "/../application/build/libs/application.jar")
             .inheritIO();
@@ -31,14 +31,14 @@ class ApplicationServer {
         waitUntilServerIsUp();
     }
 
-    void stop() {
+    public void stop() {
         serverProcess.destroyForcibly();
     }
 
 
     private void waitUntilServerIsUp() throws InterruptedException {
         String port = "8080";
-        int timeout = Integer.parseInt(getEnv("SERVER_START_TIMEOUT", "20"));
+        int timeout = 20;
         Instant start = Instant.now();
         boolean isUp = false;
 
@@ -57,15 +57,5 @@ class ApplicationServer {
                 Thread.sleep(200);
             }
         }
-    }
-
-    private String getEnv(String name, String defaultValue) {
-        String value = System.getenv(name);
-
-        if (value == null) {
-            return defaultValue;
-        }
-
-        return value;
     }
 }

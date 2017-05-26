@@ -19,23 +19,3 @@ dependencies {
     testCompile "org.assertj:assertj-core:3.7.0"
     testCompile "org.springframework.boot:spring-boot-starter-test"
 }
-
-def env = [
-    "SPRING_JPA_HIBERNATE_NAMING-STRATEGY"   : getEnv("SPRING_JPA_HIBERNATE_NAMING-STRATEGY", "org.hibernate.cfg.ImprovedNamingStrategy"),
-    "SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT": getEnv("SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT", "org.hibernate.dialect.MySQL5Dialect"),
-    "SECURITY_OAUTH2_CLIENT_CLIENT_ID"       : getEnv("SECURITY_OAUTH2_CLIENT_CLIENT_ID", "please-use-env-variable"),
-    "SECURITY_OAUTH2_CLIENT_CLIENT_SECRET"   : getEnv("SECURITY_OAUTH2_CLIENT_CLIENT_SECRET", "please-use-env-variable"),
-    "SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI": getEnv("SECURITY_OAUTH2_RESOURCE_TOKEN_INFO_URI", "http://localhost:8081/oauth/check_token"),
-]
-
-bootRun.environment(env + [
-    "APPLICATION_MESSAGE"       : "Hello from bootRun",
-    "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_dev?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
-    "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
-])
-
-test.environment(env + [
-    "APPLICATION_MESSAGE"       : "Hello from application tests",
-    "SPRING_DATASOURCE_URL"     : getEnv("SPRING_DATASOURCE_URL", "jdbc:mysql://localhost:3306/continuum_application_test?useSSL=false&useTimezone=true&serverTimezone=UTC&useLegacyDatetimeCode=false"),
-    "SPRING_DATASOURCE_USERNAME": getEnv("SPRING_DATASOURCE_USERNAME", "continuum"),
-])

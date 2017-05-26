@@ -1,4 +1,4 @@
-package integrationtests;
+package test.pivotal.pal.continuum.support;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.*;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 import static java.lang.String.format;
 
-class HttpClient {
+public class HttpClient {
 
     private static final MediaType JSON = MediaType.parse("application/json");
 
@@ -21,11 +21,11 @@ class HttpClient {
         this.bearerToken = bearerToken;
     }
 
-    Response get(String url) {
+    public Response get(String url) {
         return fetch(new Request.Builder().url(url));
     }
 
-    Response post(String url, Map<String, Object> jsonBody) {
+    public Response post(String url, Map<String, Object> jsonBody) {
         try {
             Request.Builder reqBuilder = new Request.Builder()
                 .url(url)
@@ -37,7 +37,7 @@ class HttpClient {
         }
     }
 
-    Response put(String url, Map<String, Object> jsonBody) {
+    public Response put(String url, Map<String, Object> jsonBody) {
         try {
             Request.Builder reqBuilder = new Request.Builder()
                 .url(url)

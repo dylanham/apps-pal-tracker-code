@@ -1,4 +1,4 @@
-package pivotal.pal.continuum;
+package test.pivotal.pal.continuum;
 
 import io.pivotal.pal.continuum.backlog.StoryForm;
 import io.pivotal.pal.continuum.backlog.StoryInfo;

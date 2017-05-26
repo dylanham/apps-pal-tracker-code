@@ -1,4 +1,4 @@
-package integrationtests;
+package test.pivotal.pal.continuum.support;
 
 import com.jayway.jsonpath.DocumentContext;
 import org.assertj.core.api.AbstractAssert;

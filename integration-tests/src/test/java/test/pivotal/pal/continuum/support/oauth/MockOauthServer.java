@@ -1,4 +1,4 @@
-package integrationtests.oauth;
+package test.pivotal.pal.continuum.support.oauth;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,8 +10,8 @@ import okhttp3.mockwebserver.RecordedRequest;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-import static integrationtests.MapBuilder.jsonMapBuilder;
 import static java.util.Arrays.asList;
+import static test.pivotal.pal.continuum.support.MapBuilder.jsonMapBuilder;
 
 public class MockOauthServer {
 

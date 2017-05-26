@@ -11,36 +11,42 @@ class CfMigrationPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        def appName = project.hasProperty("prod") ? "app-continuum" : "app-continuum-review"
-        def tunnelProcess = null
+        Process tunnelProcess = null
 
-        project.task("openTunnel") {
-            doLast {
-                println "Opening Tunnel for $appName"
-                Thread.start {
-                    tunnelProcess = "cf ssh -N -L 63306:${getMysqlHost(appName)}:3306 $appName".execute()
+        project.with {
+            afterEvaluate {
+                def databases = project.extensions.findByType(DatabasesExtension)
+                def appName = project.hasProperty("prod") ? databases.cfProdApp : databases.cfReviewApp
+
+                task("openTunnel") {
+                    doLast {
+                        println "Opening Tunnel for $appName"
+                        Thread.start {
+                            tunnelProcess = "cf ssh -N -L 63306:${getMysqlHost(appName)}:3306 $appName".execute()
+                        }
+                        sleep 5_000L
+                    }
                 }
-                sleep 5_000L
+
+                task("closeTunnel") {
+                    doLast {
+                        println "Closing Tunnel"
+                        tunnelProcess?.destroyForcibly()
+                    }
+                }
+
+                task("cfMigrate", type: FlywayMigrateTask, group: "Migration") {
+                    dependsOn "openTunnel"
+                    finalizedBy "closeTunnel"
+                    doFirst { extension = buildFlywayExtension(project, appName) }
+                }
+
+                task("cfRepair", type: FlywayRepairTask, group: "Migration") {
+                    dependsOn "openTunnel"
+                    finalizedBy "closeTunnel"
+                    doFirst { extension = buildFlywayExtension(project, appName) }
+                }
             }
-        }
-
-        project.task("closeTunnel") {
-            doLast {
-                println "Closing Tunnel"
-                tunnelProcess?.destroy()
-            }
-        }
-
-        project.task("cfMigrate", type: FlywayMigrateTask) {
-            dependsOn "openTunnel"
-            finalizedBy "closeTunnel"
-            doFirst { extension = buildFlywayExtension(project, appName) }
-        }
-
-        project.task("cfRepair", type: FlywayRepairTask) {
-            dependsOn "openTunnel"
-            finalizedBy "closeTunnel"
-            doFirst { extension = buildFlywayExtension(project, appName) }
         }
     }
 
@@ -67,7 +73,7 @@ class CfMigrationPlugin implements Plugin<Project> {
         def appGuid = execute("cf app $cfAppName --guid").trim()
         def envResponse = execute("cf curl /v2/apps/$appGuid/env")
         def envJson = new JsonSlurper().parseText(envResponse)
-        def vcapServices = envJson["system_env_json"]["VCAP_SERVICES"]
+        def vcapServices = envJson["system_env_json"]?.getAt("VCAP_SERVICES")
 
         return vcapServices?.getAt("p-mysql")?.getAt(0)?.getAt("credentials")
     }

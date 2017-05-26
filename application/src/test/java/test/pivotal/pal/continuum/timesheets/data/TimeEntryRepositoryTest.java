@@ -1,4 +1,4 @@
-package pivotal.pal.continuum.timesheets.data;
+package test.pivotal.pal.continuum.timesheets.data;
 
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryFields;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord;
@@ -6,7 +6,7 @@ import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
-import pivotal.pal.continuum.TestDataSourceFactory;
+import test.pivotal.pal.continuum.TestDataSourceFactory;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
