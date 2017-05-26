@@ -3,6 +3,7 @@ package test.pivotal.pal.continuum.support;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
 
 import static org.junit.Assert.fail;
 
@@ -18,10 +19,12 @@ public class ApplicationServer {
     }
 
 
-    public void start() throws IOException, InterruptedException {
+    public void start(Map<String, String> env) throws IOException, InterruptedException {
         ProcessBuilder processBuilder = new ProcessBuilder()
             .command("java", "-jar", workingDir + "/../application/build/libs/application.jar")
             .inheritIO();
+
+        env.forEach((key, value) -> processBuilder.environment().put(key, value));
 
         serverProcess = processBuilder.start();
 

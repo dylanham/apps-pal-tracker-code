@@ -8,6 +8,7 @@ import test.pivotal.pal.continuum.support.HttpClient;
 import test.pivotal.pal.continuum.support.HttpClient.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static test.pivotal.pal.continuum.support.MapBuilder.envMapBuilder;
 
 public class HelloIntegrationTest {
 
@@ -16,7 +17,9 @@ public class HelloIntegrationTest {
 
     @Before
     public void setup() throws Exception {
-        server.start();
+        server.start(envMapBuilder()
+            .put("APPLICATION_MESSAGE", "Hello from the integration test!")
+            .build());
     }
 
     @After
@@ -29,6 +32,6 @@ public class HelloIntegrationTest {
         Response response = httpClient.get("http://localhost:8080/hello");
 
         assertThat(response.status).isEqualTo(200);
-        assertThat(response.body).contains("Hello world!");
+        assertThat(response.body).contains("Hello from the integration test!");
     }
 }
