@@ -51,6 +51,13 @@ public class TimeEntriesController {
         return new ResponseEntity<>(present(record), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<TimeEntryInfo> update(@PathVariable long id, @RequestBody TimeEntryForm form) {
+        TimeEntryRecord record = repository.update(id, formToFields(form));
+
+        return new ResponseEntity<>(present(record), HttpStatus.OK);
+    }
+
 
     private TimeEntryFields formToFields(TimeEntryForm form) {
         return timeEntryFieldsBuilder()

@@ -44,11 +44,31 @@ public class TimesheetsIntegrationTest extends IntegrationTest {
             .hasString("$.date", "2017-05-20")
             .hasInt("$.hours", 6);
 
+        int createdId = parse(response.body).read("$.id", Integer.class);
+
 
         //list
         response = httpClient.get("http://localhost:8080/time-entries");
 
         assertThat(response.status).isEqualTo(200);
         assertThat(parse(response.body)).hasInt("$.timeEntries.length()", 2);
+
+
+        //update
+        response = httpClient.put("http://localhost:8080/time-entries/" + createdId, jsonMapBuilder()
+            .put("projectId", 111)
+            .put("userId", 211)
+            .put("date", "2017-05-21")
+            .put("hours", 8)
+            .build()
+        );
+
+        assertThat(response.status).isEqualTo(200);
+        assertThat(parse(response.body))
+            .hasInt("$.id", createdId)
+            .hasInt("$.projectId", 111)
+            .hasInt("$.userId", 211)
+            .hasString("$.date", "2017-05-21")
+            .hasInt("$.hours", 8);
     }
 }

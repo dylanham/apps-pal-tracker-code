@@ -116,4 +116,31 @@ public class TimeEntriesControllerTest {
             .build()
         );
     }
+
+    @Test
+    public void testUpdate() {
+        TimeEntryForm form = testTimeEntryFormBuilder()
+            .date("2017-12-31")
+            .build();
+        TimeEntryFields fields = testTimeEntryFieldsBuilder()
+            .date(LocalDate.parse("2017-12-31"))
+            .build();
+        TimeEntryRecord updatedRecord = testTimeEntryRecordBuilder()
+            .id(121L)
+            .date(LocalDate.parse("2017-12-31"))
+            .build();
+
+        doReturn(updatedRecord).when(repository).update(121L, fields);
+
+
+        ResponseEntity<TimeEntryInfo> entity = controller.update(121L, form);
+
+
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(entity.getBody()).isEqualTo(testTimeEntryInfoBuilder()
+            .id(121L)
+            .date("2017-12-31")
+            .build()
+        );
+    }
 }

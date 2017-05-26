@@ -30,6 +30,18 @@ public class HttpClient {
         }
     }
 
+    public Response put(String url, Map<String, Object> jsonBody) {
+        try {
+            Request.Builder reqBuilder = new Request.Builder()
+                .url(url)
+                .put(RequestBody.create(JSON, objectMapper.writeValueAsString(jsonBody)));
+
+            return fetch(reqBuilder);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     private Response fetch(Request.Builder requestBuilder) {
         try {

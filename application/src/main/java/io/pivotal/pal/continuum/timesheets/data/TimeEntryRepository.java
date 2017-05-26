@@ -40,6 +40,15 @@ public class TimeEntryRepository {
         return newRecord;
     }
 
+    public TimeEntryRecord update(long id, TimeEntryFields fields) {
+        find(id).ifPresent(record -> {
+            records.remove(record);
+            records.add(buildRecord(id, fields));
+        });
+
+        return find(id).orElse(null);
+    }
+
 
     private TimeEntryRecord buildRecord(long id, TimeEntryFields fields) {
         return timeEntryRecordBuilder()
