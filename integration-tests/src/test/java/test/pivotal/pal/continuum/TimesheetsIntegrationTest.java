@@ -70,5 +70,13 @@ public class TimesheetsIntegrationTest extends IntegrationTest {
             .hasInt("$.userId", 211)
             .hasString("$.date", "2017-05-21")
             .hasInt("$.hours", 8);
+
+
+        //delete
+        response = httpClient.delete("http://localhost:8080/time-entries/" + createdId);
+        assertThat(response.status).isEqualTo(200);
+
+        response = httpClient.get("http://localhost:8080/time-entries/" + createdId);
+        assertThat(response.status).isEqualTo(404);
     }
 }

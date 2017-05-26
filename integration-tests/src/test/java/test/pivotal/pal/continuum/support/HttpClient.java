@@ -42,6 +42,10 @@ public class HttpClient {
         }
     }
 
+    public Response delete(String url) {
+        return fetch(new Request.Builder().delete().url(url));
+    }
+
 
     private Response fetch(Request.Builder requestBuilder) {
         try {
