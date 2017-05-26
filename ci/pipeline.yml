@@ -32,6 +32,15 @@ resources:
     organization: {{deploy-org}}
     space: {{review-space}}
 
+- name: cf-prod
+  type: cf
+  source:
+    api: https://api.run.pivotal.io
+    username: {{deploy-username}}
+    password: {{deploy-password}}
+    organization: {{deploy-org}}
+    space: {{prod-space}}
+
 
 jobs:
 - name: build
@@ -61,3 +70,15 @@ jobs:
       manifest: app-continuum/manifest-review.yml
       path: artifact/app-continuum-*.jar
       current_app_name: app-continuum-review
+
+- name: deploy-prod
+  plan:
+  - get: app-continuum
+    passed: [build]
+  - get: artifact
+    trigger: false
+  - put: cf-prod
+    params:
+      manifest: app-continuum/manifest-prod.yml
+      path: artifact/app-continuum-*.jar
+      current_app_name: app-continuum
