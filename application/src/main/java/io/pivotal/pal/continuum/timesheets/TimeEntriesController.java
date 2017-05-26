@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static io.pivotal.pal.continuum.timesheets.TimeEntryInfo.timeEntryInfoBuilder;
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryFields.timeEntryFieldsBuilder;
+import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -23,6 +25,17 @@ public class TimeEntriesController {
         this.repository = repository;
     }
 
+
+    @GetMapping
+    public ResponseEntity<TimeEntryInfoList> list() {
+        List<TimeEntryInfo> timeEntries = repository.findAll()
+            .stream()
+            .map(this::present)
+            .collect(toList());
+        TimeEntryInfoList timeEntryInfoList = new TimeEntryInfoList(timeEntries);
+
+        return new ResponseEntity<>(timeEntryInfoList, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<TimeEntryInfo> show(@PathVariable long id) {

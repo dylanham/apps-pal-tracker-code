@@ -43,5 +43,12 @@ public class TimesheetsIntegrationTest extends IntegrationTest {
             .hasInt("$.userId", 201)
             .hasString("$.date", "2017-05-20")
             .hasInt("$.hours", 6);
+
+
+        //list
+        response = httpClient.get("http://localhost:8080/time-entries");
+
+        assertThat(response.status).isEqualTo(200);
+        assertThat(parse(response.body)).hasInt("$.timeEntries.length()", 2);
     }
 }

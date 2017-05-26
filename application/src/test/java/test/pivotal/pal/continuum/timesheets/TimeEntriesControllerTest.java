@@ -3,6 +3,7 @@ package test.pivotal.pal.continuum.timesheets;
 import io.pivotal.pal.continuum.timesheets.TimeEntriesController;
 import io.pivotal.pal.continuum.timesheets.TimeEntryForm;
 import io.pivotal.pal.continuum.timesheets.TimeEntryInfo;
+import io.pivotal.pal.continuum.timesheets.TimeEntryInfoList;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryFields;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRecord;
 import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
@@ -11,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -23,6 +26,37 @@ public class TimeEntriesControllerTest {
     private TimeEntryRepository repository = mock(TimeEntryRepository.class);
     private TimeEntriesController controller = new TimeEntriesController(repository);
 
+
+    @Test
+    public void testList() {
+        List<TimeEntryRecord> records = asList(
+            testTimeEntryRecordBuilder()
+                .id(112L)
+                .date(LocalDate.parse("2016-12-31"))
+                .build(),
+            testTimeEntryRecordBuilder()
+                .id(113L)
+                .date(LocalDate.parse("2017-12-31"))
+                .build()
+        );
+        doReturn(records).when(repository).findAll();
+
+
+        ResponseEntity<TimeEntryInfoList> entity = controller.list();
+
+
+        assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(entity.getBody()).isEqualTo(new TimeEntryInfoList(asList(
+            testTimeEntryInfoBuilder()
+                .id(112L)
+                .date("2016-12-31")
+                .build(),
+            testTimeEntryInfoBuilder()
+                .id(113L)
+                .date("2017-12-31")
+                .build()
+        )));
+    }
 
     @Test
     public void testShow() {

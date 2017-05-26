@@ -6,6 +6,7 @@ import io.pivotal.pal.continuum.timesheets.data.TimeEntryRepository;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static io.pivotal.pal.continuum.timesheets.data.TimeEntryFields.timeEntryFieldsBuilder;
@@ -15,6 +16,34 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TimeEntryRepositoryTest {
 
     private TimeEntryRepository repo = new TimeEntryRepository();
+
+
+    @Test
+    public void testFindAll() {
+        TimeEntryRecord createdRecord = repo.create(
+            timeEntryFieldsBuilder()
+                .projectId(52L)
+                .userId(12L)
+                .date(LocalDate.parse("2016-02-22"))
+                .hours(4)
+                .build()
+        );
+
+
+        List<TimeEntryRecord> foundRecords = repo.findAll();
+
+
+        assertThat(foundRecords).containsExactlyInAnyOrder(
+            createdRecord,
+            timeEntryRecordBuilder()
+                .id(1)
+                .projectId(10)
+                .userId(20)
+                .date(LocalDate.parse("2017-01-30"))
+                .hours(8)
+                .build()
+        );
+    }
 
     @Test
     public void testFind() {
