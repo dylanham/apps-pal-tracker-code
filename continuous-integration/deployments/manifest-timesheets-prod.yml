@@ -1,0 +1,11 @@
+applications:
+- name: tracker-timesheets-prod
+  path: ../../applications/timesheets-server/build/libs/timesheets-server.jar
+  memory: 256M
+  instances: 1
+  host: timesheets-pal
+  domain: cfapps.io
+  services:
+  - tracker-timesheets-database-prod
+  env:
+    REGISTRATION_SERVER_ENDPOINT: https://registration-pal.cfapps.io

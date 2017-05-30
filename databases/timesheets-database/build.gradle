@@ -1,0 +1,6 @@
+databases {
+    devDatabase = "tracker_timesheets_dev"
+    testDatabase = "tracker_timesheets_test"
+    cfReviewApp = "tracker-timesheets-review"
+    cfProdApp = "tracker-timesheets-prod"
+}

@@ -1,0 +1,6 @@
+databases {
+    devDatabase = "tracker_backlog_dev"
+    testDatabase = "tracker_backlog_test"
+    cfReviewApp = "tracker-backlog-review"
+    cfProdApp = "tracker-backlog-prod"
+}

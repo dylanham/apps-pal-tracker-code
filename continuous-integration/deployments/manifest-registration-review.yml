@@ -1,0 +1,9 @@
+applications:
+- name: tracker-registration-review
+  path: ../../applications/registration-server/build/libs/registration-server.jar
+  memory: 256M
+  instances: 1
+  host: registration-review-pal
+  domain: cfapps.io
+  services:
+  - tracker-registration-database-review

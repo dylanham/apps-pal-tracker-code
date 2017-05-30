@@ -1,0 +1,11 @@
+applications:
+- name: tracker-allocations-prod
+  path: ../../applications/allocations-server/build/libs/allocations-server.jar
+  memory: 256M
+  instances: 1
+  host: allocations-pal
+  domain: cfapps.io
+  services:
+  - tracker-allocations-database-prod
+  env:
+    REGISTRATION_SERVER_ENDPOINT: https://registration-pal.cfapps.io
