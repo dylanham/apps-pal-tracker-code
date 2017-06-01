@@ -37,6 +37,8 @@ public class ApplicationServer {
 
         start(envMapBuilder()
             .put("SPRING_DATASOURCE_URL", dbUrl)
+            .put("EUREKA_CLIENT_ENABLED", "false")
+            .put("REGISTRATION_SERVER_ENDPOINT", "http://localhost:8883")
             .build()
         );
     }
@@ -52,7 +54,7 @@ public class ApplicationServer {
 
     private static void waitUntilServerIsUp(String port) throws InterruptedException {
         HttpClient httpClient = new HttpClient();
-        int timeout = 60;
+        int timeout = 300;
         Instant start = Instant.now();
         boolean isUp = false;
 
