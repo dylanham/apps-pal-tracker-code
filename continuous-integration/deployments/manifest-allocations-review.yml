@@ -1,11 +1,12 @@
 applications:
 - name: tracker-allocations-review
   path: ../../applications/allocations-server/build/libs/allocations-server.jar
-  memory: 256M
+  memory: 512M
   instances: 1
   host: allocations-review-pal
   domain: cfapps.io
   services:
   - tracker-allocations-database-review
+  - tracker-service-registry-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.cfapps.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-server

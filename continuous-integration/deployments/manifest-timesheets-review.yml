@@ -1,11 +1,12 @@
 applications:
 - name: tracker-timesheets-review
   path: ../../applications/timesheets-server/build/libs/timesheets-server.jar
-  memory: 256M
+  memory: 512M
   instances: 1
   host: timesheets-review-pal
   domain: cfapps.io
   services:
   - tracker-timesheets-database-review
+  - tracker-service-registry-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.cfapps.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-server
