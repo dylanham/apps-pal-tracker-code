@@ -10,5 +10,7 @@ applications:
   - tracker-service-registry-prod
   - tracker-circuit-breaker-dashboard-prod
   - tracker-amqp-prod
+  - tracker-sso-prod
   env:
     REGISTRATION_SERVER_ENDPOINT: https://registration-server
+    GRANT_TYPE: client_credentials
