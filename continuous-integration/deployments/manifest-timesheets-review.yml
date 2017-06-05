@@ -12,3 +12,5 @@ applications:
   - tracker-amqp-review
   env:
     REGISTRATION_SERVER_ENDPOINT: https://registration-server
+    SECURITY_USER_NAME: actuator
+    SECURITY_USER_PASSWORD: operations4red

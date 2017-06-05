@@ -10,3 +10,7 @@ applications:
   - tracker-service-registry-review
   - tracker-circuit-breaker-dashboard-review
   - tracker-amqp-review
+  env:
+    SECURITY_USER_NAME: actuator
+    SECURITY_USER_PASSWORD: operations4red
+

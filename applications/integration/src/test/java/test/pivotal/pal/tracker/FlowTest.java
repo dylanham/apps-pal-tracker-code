@@ -42,6 +42,7 @@ public class FlowTest {
 
     private long findResponseId(HttpClient.Response response) {
         try {
+            assertThat(response.status).isBetween(200, 299);
             return JsonPath.parse(response.body).read("$.id", Long.class);
         } catch (PathNotFoundException e) {
             try {

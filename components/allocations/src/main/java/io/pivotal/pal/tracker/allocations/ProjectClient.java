@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static java.lang.String.format;
+
 @Component
 public class ProjectClient {
 
@@ -39,8 +41,8 @@ public class ProjectClient {
         }
     }
 
-    public ProjectInfo getProjectFromCache(long projectId) {
-        logger.info("Getting project from cache, with id {}", projectId);
+    public ProjectInfo getProjectFromCache(long projectId, Throwable cause) {
+        logger.info(format("Getting project from cache, with id %d", projectId), cause);
         return projectsCache.get(projectId);
     }
 
