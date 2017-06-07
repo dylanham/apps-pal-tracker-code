@@ -2,7 +2,7 @@ applications:
 - name: tracker-registration-prod
   path: ../../applications/registration-server/build/libs/registration-server.jar
   memory: 1G
-  instances: 1
+  instances: 2
   host: registration-pal
   domain: cfapps.io
   services:

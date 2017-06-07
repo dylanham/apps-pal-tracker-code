@@ -2,7 +2,7 @@ applications:
 - name: tracker-registration-review
   path: ../../applications/registration-server/build/libs/registration-server.jar
   memory: 1G
-  instances: 1
+  instances: 2
   host: registration-review-pal
   domain: cfapps.io
   services:
@@ -15,4 +15,3 @@ applications:
     SECURITY_USER_NAME: actuator
     SECURITY_USER_PASSWORD: operations4red
     GRANT_TYPE: client_credentials
-
