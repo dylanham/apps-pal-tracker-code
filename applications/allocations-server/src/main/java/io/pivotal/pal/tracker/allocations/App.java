@@ -14,7 +14,11 @@ import java.util.TimeZone;
 
 
 @SpringBootApplication
-@ComponentScan({"io.pivotal.pal.tracker.allocations", "io.pivotal.pal.tracker.restsupport"})
+@ComponentScan({
+    "io.pivotal.pal.tracker.allocations",
+    "io.pivotal.pal.tracker.restsupport",
+    "io.pivotal.pal.tracker.zipkinsupport"
+})
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableResourceServer

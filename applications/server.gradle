@@ -10,6 +10,7 @@ dependencyManagement {
 
 dependencies {
     compile project(":components:rest-support")
+    compile project(":components:zipkin-support")
 
     compile "org.springframework.boot:spring-boot-starter-web"
     compile "org.springframework.boot:spring-boot-starter-actuator"
@@ -22,7 +23,6 @@ dependencies {
     compile "com.zaxxer:HikariCP:2.3.7"
     compile "mysql:mysql-connector-java:$mysqlVersion"
     compile "ch.qos.logback:logback-classic:1.1.11"
-    compile project(":components:rest-support")
 
     testCompile project(":components:test-support")
 }

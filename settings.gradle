@@ -5,6 +5,7 @@ include "applications:backlog-server"
 include "applications:integration"
 include "applications:registration-server"
 include "applications:timesheets-server"
+include "applications:zipkin-server"
 
 include "components:accounts"
 include "components:allocations"
@@ -15,6 +16,7 @@ include "components:users"
 
 include "components:rest-support"
 include "components:test-support"
+include "components:zipkin-support"
 
 include "databases:allocations-database"
 include "databases:backlog-database"

@@ -42,6 +42,7 @@ public class ApplicationServer {
             .put("APPLICATION_OAUTH_ENABLED", "false")
             .put("REGISTRATION_SERVER_ENDPOINT", "//registration-server")
             .put("REGISTRATION-SERVER_RIBBON_LISTOFSERVERS", "http://localhost:8883")
+            .put("SPRING_ZIPKIN_ENABLED", "false")
             .build()
         );
     }

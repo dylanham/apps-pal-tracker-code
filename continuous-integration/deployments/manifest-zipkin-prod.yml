@@ -1,0 +1,9 @@
+applications:
+- name: tracker-zipkin-prod
+  path: ../../applications/zipkin-server/build/libs/zipkin-server.jar
+  memory: 1G
+  instances: 1
+  host: zipkin-pal
+  domain: cfapps.io
+  services:
+  - tracker-service-registry-prod

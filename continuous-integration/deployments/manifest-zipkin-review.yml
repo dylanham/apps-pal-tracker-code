@@ -1,0 +1,9 @@
+applications:
+- name: tracker-zipkin-review
+  path: ../../applications/zipkin-server/build/libs/zipkin-server.jar
+  memory: 1G
+  instances: 1
+  host: zipkin-review-pal
+  domain: cfapps.io
+  services:
+  - tracker-service-registry-review

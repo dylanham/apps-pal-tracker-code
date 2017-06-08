@@ -1,0 +1,16 @@
+apply plugin: "org.springframework.boot"
+apply plugin: "io.spring.dependency-management"
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:$springCloudDependenciesVersion"
+        mavenBom "io.pivotal.spring.cloud:spring-cloud-services-dependencies:$springCloudServicesVersion"
+    }
+}
+
+dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
+    compile "io.pivotal.spring.cloud:spring-cloud-services-starter-service-registry"
+    compile "io.zipkin.java:zipkin-server"
+    compile "io.zipkin.java:zipkin-autoconfigure-ui"
+}
