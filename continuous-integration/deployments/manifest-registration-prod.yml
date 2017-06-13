@@ -11,5 +11,6 @@ applications:
   - tracker-circuit-breaker-dashboard-prod
   - tracker-amqp-prod
   - tracker-sso-prod
+  - tracker-config-server-prod
   env:
     GRANT_TYPE: client_credentials

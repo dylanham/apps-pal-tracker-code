@@ -11,8 +11,6 @@ applications:
   - tracker-circuit-breaker-dashboard-review
   - tracker-amqp-review
   - tracker-sso-review
+  - tracker-config-server-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: http://registration-server
-    SECURITY_USER_NAME: actuator
-    SECURITY_USER_PASSWORD: operations4red
     GRANT_TYPE: client_credentials
