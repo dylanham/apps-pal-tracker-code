@@ -8,4 +8,4 @@ applications:
   services:
   - tracker-backlog-database-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.cfapps.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.longs.pal.pivotal.io

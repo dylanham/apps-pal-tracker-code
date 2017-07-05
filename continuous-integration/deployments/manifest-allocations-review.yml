@@ -4,8 +4,8 @@ applications:
   memory: 256M
   instances: 1
   host: allocations-review-pal
-  domain: cfapps.io
+  domain: longs.pal.pivotal.io
   services:
   - tracker-allocations-database-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.cfapps.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.longs.pal.pivotal.io

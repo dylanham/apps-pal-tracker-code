@@ -4,6 +4,6 @@ applications:
   memory: 256M
   instances: 1
   host: registration-review-pal
-  domain: cfapps.io
+  domain: longs.pal.pivotal.io
   services:
   - tracker-registration-database-review
