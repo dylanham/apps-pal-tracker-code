@@ -4,8 +4,8 @@ applications:
   memory: 256M
   instances: 1
   host: backlog-review-pal
-  domain: longs.pal.pivotal.io
+  domain: apps.longs.pal.pivotal.io
   services:
   - tracker-backlog-database-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.longs.pal.pivotal.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.apps.longs.pal.pivotal.io
