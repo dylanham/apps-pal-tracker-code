@@ -3,8 +3,8 @@ resources:
 - name: pal-tracker
   type: git
   source:
-    uri: git@github.com:platform-acceleration-lab/apps-pal-tracker-code.git
-    branch: micro-services
+    uri: git@github.com:dylanham/apps-pal-tracker-code.git
+    branch: my-work
     private_key: {{github-private-key}}
 
 - name: version
@@ -27,7 +27,7 @@ resources:
   type: s3
   source:
     bucket: {{aws-bucket}}
-    regexp: pal-tracker/backlog-server-(.*).jar
+    regexp: pal-tracker-djh/backlog-server-(.*).jar
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
@@ -35,7 +35,7 @@ resources:
   type: s3
   source:
     bucket: {{aws-bucket}}
-    regexp: pal-tracker/registration-server-(.*).jar
+    regexp: pal-tracker-djh/registration-server-(.*).jar
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
@@ -50,20 +50,22 @@ resources:
 - name: cf-review
   type: cf
   source:
-    api: https://api.run.pivotal.io
+    api: https://api.sys.longs.pal.pivotal.io
     username: {{deploy-username}}
     password: {{deploy-password}}
     organization: {{deploy-org}}
     space: {{review-space}}
+    skip_cert_check: true
 
 - name: cf-prod
   type: cf
   source:
-    api: https://api.run.pivotal.io
+    api: https://api.sys.longs.pal.pivotal.io
     username: {{deploy-username}}
     password: {{deploy-password}}
     organization: {{deploy-org}}
     space: {{prod-space}}
+    skip_cert_check: true
 
 
 jobs:

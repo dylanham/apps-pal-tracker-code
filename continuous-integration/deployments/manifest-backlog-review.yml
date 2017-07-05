@@ -4,7 +4,7 @@ applications:
   memory: 256M
   instances: 1
   host: backlog-review-pal
-  domain: cfapps.io
+  domain: longs.pal.pivotal.io
   services:
   - tracker-backlog-database-review
   env:
