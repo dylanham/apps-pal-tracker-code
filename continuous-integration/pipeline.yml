@@ -11,7 +11,7 @@ resources:
   type: semver
   source:
     bucket: {{aws-bucket}}
-    key: pal-tracker/current-version
+    key: pal-tracker-djh/current-version
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
@@ -19,7 +19,7 @@ resources:
   type: s3
   source:
     bucket: {{aws-bucket}}
-    regexp: pal-tracker/allocations-server-(.*).jar
+    regexp: pal-tracker-djh/allocations-server-(.*).jar
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
@@ -43,7 +43,7 @@ resources:
   type: s3
   source:
     bucket: {{aws-bucket}}
-    regexp: pal-tracker/timesheets-server-(.*).jar
+    regexp: pal-tracker-djh/timesheets-server-(.*).jar
     access_key_id: {{aws-access-key-id}}
     secret_access_key: {{aws-secret-access-key}}
 
