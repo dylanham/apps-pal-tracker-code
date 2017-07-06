@@ -8,4 +8,5 @@ applications:
   services:
   - tracker-timesheets-database-review
   env:
+    REGISTRATION_SERVER_ENDPOINT: http://registration-review-pal-djh.apps.longs.pal.pivotal.io
     TRUST_CERTS: api.sys.longs.pal.pivotal.io
