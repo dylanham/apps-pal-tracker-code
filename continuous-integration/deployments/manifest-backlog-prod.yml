@@ -3,9 +3,9 @@ applications:
   path: ../../applications/backlog-server/build/libs/backlog-server.jar
   memory: 256M
   instances: 1
-  host: backlog-pal
+  host: backlog-pal-djh
   domain: apps.longs.pal.pivotal.io
   services:
   - tracker-backlog-database-prod
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-pal.apps.longs.pal.pivotal.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-pal-djh.apps.longs.pal.pivotal.io

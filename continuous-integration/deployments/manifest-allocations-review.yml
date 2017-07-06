@@ -3,9 +3,9 @@ applications:
   path: ../../applications/allocations-server/build/libs/allocations-server.jar
   memory: 256M
   instances: 1
-  host: allocations-review-pal
+  host: allocations-review-pal-djh
   domain: apps.longs.pal.pivotal.io
   services:
   - tracker-allocations-database-review
   env:
-    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal.apps.longs.pal.pivotal.io
+    REGISTRATION_SERVER_ENDPOINT: https://registration-review-pal-djh.apps.longs.pal.pivotal.io
