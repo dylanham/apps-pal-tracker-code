@@ -7,3 +7,5 @@ applications:
   domain: apps.longs.pal.pivotal.io
   services:
   - tracker-registration-database-prod
+  env:
+      TRUST_CERTS: api.sys.longs.pal.pivotal.io
