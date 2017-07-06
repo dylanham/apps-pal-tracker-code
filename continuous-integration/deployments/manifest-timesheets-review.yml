@@ -8,4 +8,4 @@ applications:
   services:
   - tracker-timesheets-database-review
   env:
-    TRUST_CERTS: api.sys.long
+    TRUST_CERTS: api.sys.longs.pal.pivotal.io
